@@ -17,7 +17,7 @@ const DB = process.env.DATABASE!.replace(
       console.log("Db connection successful");
     });
 
-const port = 4040;
+const port = 4000;
 const server = app.listen(port, () => {
   console.log(`App running in port ${port}...`);
 });
