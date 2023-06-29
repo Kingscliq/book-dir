@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 
-import bookRouter from "./routes/bookRoute"
+import bookRouter from "./routes/book.route"
 
 const app = express();
 
