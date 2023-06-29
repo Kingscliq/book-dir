@@ -3,6 +3,18 @@ import Book from './../models/bookModel'
 import catchAsync from './../utils/catchAsync'
 import AppError from '../utils/appError'
 
+
+// get one book
+const getAllBook = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
+    const books = await Book.find()
+    res.status(200).json({
+      status: "success",
+      data: {
+        books: books,
+      },
+    });
+  });
+
 // create book
 const createBook = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
     const newBook = await Book.create(req.body);
