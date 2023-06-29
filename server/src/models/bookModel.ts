@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const bookSchema = new mongoose.Schema({
-    Name: {
+    name: {
         type: String,
         required: [true, "A book must have a name"],
         unique: true,
@@ -9,16 +9,16 @@ const bookSchema = new mongoose.Schema({
         maxlength: [40, "A book name must have less or equal to 40 characters"],
         minlength: [10, "A book name must have more or equal to 10 characters"],
     },
-    Authors:[String],
+    authors:[String],
     ISBN:{
         type:String,
         required:[true, 'A book must have a unique  ISBN number ']
     },
-    Summary:{
+    summary:{
         type:String,
         required:[true, "A book must contain the summary of it's content"]
     },
-    Genre:{
+    genre:{
         type:String,
         required: [true, "A book must have a genre"],
         enum: {
@@ -26,7 +26,7 @@ const bookSchema = new mongoose.Schema({
         message: "genre is either poetry,drama or prose",
       },
     },
-    Tags:{
+    tags:{
         type:String,
         required: [true, "A book must have a tag"],
         enum: {
