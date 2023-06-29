@@ -4,6 +4,7 @@ dotenv.config({ path: "./config.env" });
 
 import app from './app'
 
+dotenv.config({ path: "./.env" }); 
 
 const DB = process.env.DATABASE!.replace(
     "<password>",
