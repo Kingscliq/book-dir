@@ -1,6 +1,6 @@
 import {Request,Response,NextFunction} from 'express'
-import Book from './../models/bookModel'
-import catchAsync from './../utils/catchAsync'
+import Book from './../models/book.Model'
+import catchAsync from '../utils/catchAsync'
 import AppError from '../utils/appError'
 
 
