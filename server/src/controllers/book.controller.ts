@@ -13,20 +13,41 @@ const getAllBook = catchAsync(
         books: books,
       },
     });
-  }
+  },
 );
 
 // create book
 const createBook = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const newBook = await Book.create(req.body);
+    const {
+      name,
+      authors,
+      ISBN,
+      summary,
+      genre,
+      tags,
+      image,
+      numberOfRatings,
+      ratingAverage,
+    } = req.body;
+    const newBook = await Book.create({
+      name,
+      authors,
+      ISBN,
+      summary,
+      genre,
+      tags,
+      image,
+      numberOfRatings,
+      ratingAverage,
+    });
     res.status(201).json({
       status: 'success',
       data: {
         book: newBook,
       },
     });
-  }
+  },
 );
 
 // get one book
@@ -35,7 +56,10 @@ const getBook = catchAsync(
     const book = await Book.findById(req.params.id);
     if (!book) {
       return next(
-        new AppError(`message:No book with this ID:${req.params.id} found`, 404)
+        new AppError(
+          `message:No book with this ID:${req.params.id} found`,
+          404,
+        ),
       );
     }
     res.status(200).json({
@@ -44,7 +68,7 @@ const getBook = catchAsync(
         book: book,
       },
     });
-  }
+  },
 );
 
 // update book
@@ -56,7 +80,10 @@ const updateBook = catchAsync(
     });
     if (!book) {
       return next(
-        new AppError(`message:No book with this ID:${req.params.id} found`, 404)
+        new AppError(
+          `message:No book with this ID:${req.params.id} found`,
+          404,
+        ),
       );
     }
     res.status(200).json({
@@ -65,7 +92,7 @@ const updateBook = catchAsync(
         book,
       },
     });
-  }
+  },
 );
 
 // delete book
@@ -74,14 +101,17 @@ const deleteBook = catchAsync(
     const book = await Book.findByIdAndDelete(req.params.id);
     if (!book) {
       return next(
-        new AppError(`message:No book with this ID:${req.params.id} found`, 404)
+        new AppError(
+          `message:No book with this ID:${req.params.id} found`,
+          404,
+        ),
       );
     }
     res.status(204).json({
       status: 'success',
       data: null,
     });
-  }
+  },
 );
 
 export default { createBook, getBook, updateBook, deleteBook, getAllBook };
