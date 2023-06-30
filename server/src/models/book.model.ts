@@ -5,15 +5,15 @@ const bookSchema = new mongoose.Schema<IBook>({
     name: {
         type: String,
         required: [true, "A book must have a name"],
-        unique: true,
         trim: true,
         maxlength: [40, "A book name must have less or equal to 40 characters"],
-        minlength: [10, "A book name must have more or equal to 10 characters"],
+        minlength: [3, "A book name must have more or equal to 10 characters"],
     },
     authors:[String],
     ISBN:{
         type:String,
-        required:[true, 'A book must have a unique  ISBN number ']
+        required:[true, 'A book must have a unique  ISBN number '],
+        unique: true,
     },
     summary:{
         type:String,

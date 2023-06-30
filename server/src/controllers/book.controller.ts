@@ -9,6 +9,8 @@ const getAllBook = catchAsync(
     const books = await Book.find();
     res.status(200).json({
       status: 'success',
+      result: books.length,
+
       data: {
         books: books,
       },
