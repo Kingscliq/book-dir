@@ -10,9 +10,8 @@ import bookRouter from "./routes/book.route"
 const app = express();
 
 // Global MIDDLEWARES'
-if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
-}
+
 
 // body parser
 app.use(express.json({ limit: '10kb' })); 
