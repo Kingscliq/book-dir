@@ -6,14 +6,20 @@ import AppError from '../utils/appError';
 // get one book
 const getAllBook = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-
+    // filterinh the query
     const queryObj = {...req.query}
     const excludedFields = ['page','limit','sort','fields']
     excludedFields.forEach(exfields => delete queryObj[exfields])
+  // console.log(req.query,queryObj)
 
-    console.log(req.query,queryObj)
+  // advanced filtering
+  let queryStr = JSON.stringify(queryObj)
+  queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
+    // const books = await Book.find(queryObj);
+    const query =  Book.find(JSON.parse(queryStr));
+    // executing the query
+    const books = await query
 
-    const books = await Book.find(queryObj);
     res.status(200).json({
       status: 'success',
       result: books.length,
