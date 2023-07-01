@@ -6,7 +6,14 @@ import AppError from '../utils/appError';
 // get one book
 const getAllBook = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const books = await Book.find();
+
+    const queryObj = {...req.query}
+    const excludedFields = ['page','limit','sort','fields']
+    excludedFields.forEach(exfields => delete queryObj[exfields])
+
+    console.log(req.query,queryObj)
+
+    const books = await Book.find(queryObj);
     res.status(200).json({
       status: 'success',
       result: books.length,
