@@ -44,16 +44,16 @@ const getAllBook = catchAsync(
       const skip:number = (page - 1) * limit
       query = query.skip(skip).limit(limit)
       
-      // if(req.query.page){
-      //   // countDocuments()
-      //   const numBooks = await Book.estimatedDocumentCount()
-      //   if(skip >= numBooks){
-      //     return next(new AppError(
-      //       "The page you request does not exist",
-      //       404,
-      //     ),)
-      //   }
-      // }
+      if(req.query.page){
+        // countDocuments()
+        const numBooks = await Book.estimatedDocumentCount()
+        if(skip >= numBooks){
+          return next(new AppError(
+            "The page you request does not exist",
+            404,
+          ),)
+        }
+      }
 
     // executing the query
     const books = await query
