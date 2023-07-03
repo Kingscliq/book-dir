@@ -11,7 +11,6 @@ const getAllBook = catchAsync(
     const queryObj = {...req.query}
     const excludedFields:any[] = ['page','limit','sort','fields']
     excludedFields.forEach(exfields => delete queryObj[exfields])
-  // console.log(req.query,queryObj)
 
   // advanced filtering
   let queryStr = JSON.stringify(queryObj)
@@ -21,12 +20,12 @@ const getAllBook = catchAsync(
     let query =  Book.find(JSON.parse(queryStr));
 
       // SORTING
-    // if(req.query.sort){
-    //   const sortBy = req.query.sort.split(',').join(" ")
-    //   query = query.sort(sortBy)
-    // }else{
-    //   query.sort('-createdAt')
-    // }
+    if(req.query.sort){
+      const sortBy = (req.query.sort as any).split(',').join(" ")
+      query = query.sort(sortBy)
+    }else{
+      query.sort('-createdAt')
+    }
 
     // FIELD LIMITING
 
@@ -38,10 +37,10 @@ const getAllBook = catchAsync(
     // }
 
       // PAGINATION
-      // const page:number = req.query.page * 1 || 1
-      // const limit:number = req.query.limit * 1 || 100
-      // const skip:number = (page - 1) * limit
-      // query = query.skip(skip).limit(limit)
+      const page:number = Number(req.query.page) || 1
+      const limit:number = Number(req.query.limit) || 100
+      const skip:number = (page - 1) * limit
+      query = query.skip(skip).limit(limit)
       
       // if(req.query.page){
       //   // countDocuments()
