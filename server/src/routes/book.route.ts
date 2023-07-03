@@ -1,9 +1,17 @@
-import express from "express"
-import bookController from "../controllers/book.controller"
+import express from 'express';
+import bookController from '../controllers/book.controller';
+
 const router = express.Router();
 
-router.route("/").get().post(bookController.createBook)
+router
+  .route('/')
+  .get(bookController.getAllBook)
+  .post(bookController.createBook);
 
-router.route("/:id").get(bookController.getBook).patch(bookController.updateBook).delete(bookController.deleteBook)
+router
+  .route('/:id')
+  .get(bookController.getBook)
+  .patch(bookController.updateBook)
+  .delete(bookController.deleteBook);
 
-export default router
+export default router;

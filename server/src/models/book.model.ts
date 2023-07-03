@@ -15,6 +15,7 @@ const bookSchema = new mongoose.Schema<IBook>(
     ISBN: {
       type: String,
       required: [true, 'A book must have a unique  ISBN number '],
+      unique: true,
     },
     summary: {
       type: String,
