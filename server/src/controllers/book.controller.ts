@@ -29,11 +29,13 @@ const getAllBook = catchAsync(
 
     // FIELD LIMITING
 
-    // if(req.query.fields){
-    //   const fields = req.query.fields.split(',').join(" ")
-    //   query = query.select(fields)
-    // }else{
-    //   query.select('-__v')
+    if(req.query.fields){
+      const fields = (req.query.fields as any).split(',').join(" ")
+      query = query.select(fields)
+    }
+    // else{
+//
+      // query.select('-__v')
     // }
 
       // PAGINATION
