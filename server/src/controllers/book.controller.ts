@@ -9,7 +9,7 @@ const getAllBook = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     // filterinh the query
     const queryObj = {...req.query}
-    const excludedFields:any[] = ['page','limit','sort','fields']
+    const excludedFields:string[] = ['page','limit','sort','fields']
     excludedFields.forEach(exfields => delete queryObj[exfields])
 
   // advanced filtering
@@ -33,10 +33,9 @@ const getAllBook = catchAsync(
       const fields = (req.query.fields as any).split(',').join(" ")
       query = query.select(fields)
     }
-    // else{
-//
-      // query.select('-__v')
-    // }
+    else{
+      query.select('-__v')
+    }
 
       // PAGINATION
       const page:number = Number(req.query.page) || 1
@@ -45,7 +44,6 @@ const getAllBook = catchAsync(
       query = query.skip(skip).limit(limit)
       
       if(req.query.page){
-        // countDocuments()
         const numBooks = await Book.estimatedDocumentCount()
         if(skip >= numBooks){
           return next(new AppError(
