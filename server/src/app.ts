@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import AppError from './utils/appError';
 import glogalErrorHandler from './controllers/error.controller'
 import bookRouter from "./routes/book.route"
+import reviewRouter from "./routes/review.route"
 
 const app = express();
 
@@ -19,6 +20,8 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.static(`${__dirname}/public`)); //for serving static files
 
 app.use("/api/v1/books", bookRouter);
+app.use("/api/v1/reviews", reviewRouter);
+
 
 // Handling undefined routes
 app.all("*", (req:Request, res:Response, next:NextFunction) => {
