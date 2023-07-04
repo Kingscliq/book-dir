@@ -4,7 +4,7 @@ import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/appError';
 
 
-// get one book
+// get All review
 const getAllReviews = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const reviews = await Review.find()
@@ -20,7 +20,7 @@ const getAllReviews = catchAsync(
   },
 );
 
-// create book
+// create review
 const createReview = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const {
@@ -44,7 +44,7 @@ const createReview = catchAsync(
   },
 );
 
-// get one book
+// get one review
 const getReview = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const review = await Review.findById(req.params.id);
@@ -65,17 +65,17 @@ const getReview = catchAsync(
   },
 );
 
-// update book
-const updateBook = catchAsync(
+// update review
+const updateReview = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
+    const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
-    if (!book) {
+    if (!review) {
       return next(
         new AppError(
-          `message:No book with this ID:${req.params.id} found`,
+          `message:No review with this ID:${req.params.id} found`,
           404,
         ),
       );
@@ -83,20 +83,20 @@ const updateBook = catchAsync(
     res.status(200).json({
       status: 'success',
       data: {
-        book,
+        review,
       },
     });
   },
 );
 
-// delete book
-const deleteBook = catchAsync(
+// delete review
+const deleteReview = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const book = await Book.findByIdAndDelete(req.params.id);
-    if (!book) {
+    const review = await Review.findByIdAndDelete(req.params.id);
+    if (!review) {
       return next(
         new AppError(
-          `message:No book with this ID:${req.params.id} found`,
+          `message:No review with this ID:${req.params.id} found`,
           404,
         ),
       );
@@ -108,4 +108,4 @@ const deleteBook = catchAsync(
   },
 );
 
-export default { createBook, getBook, updateBook, deleteBook, getAllBook };
+export default { createReview, getReview, updateReview, deleteReview, getAllReviews };
