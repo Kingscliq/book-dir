@@ -14,7 +14,7 @@ const getAllReviews = catchAsync(
       result: reviews.length,
 
       data: {
-        books: reviews,
+        reviews: reviews,
       },
     });
   },
