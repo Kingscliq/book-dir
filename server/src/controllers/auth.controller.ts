@@ -48,17 +48,13 @@ const signup = catchAsync(
 
 const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body);
-
     const { username: name, password } = req.body;
 
     const user = await User.findOne({ username: name });
 
     if (user) {
       const passwordMatch = await argon.verify(user.password, password);
-
       if (!passwordMatch) {
-        console.log(passwordMatch);
         return next(new AppError(`Incorrect username or Password`, 400));
       }
     } else {

@@ -7,7 +7,7 @@ import AppError from '../utils/appError';
 // get one book
 const getAllBook = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    // filterinh the query
+    // filtering the query
     const queryObj = {...req.query}
     const excludedFields:string[] = ['page','limit','sort','fields']
     excludedFields.forEach(exfields => delete queryObj[exfields])
