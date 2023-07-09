@@ -51,11 +51,13 @@ const login = catchAsync(
     const { username: name, password } = req.body;
 
     const user = await User.findOne({ username: name });
-
-    const passwordMatch = await argon.verify(user?.password!, password);
-
-    if (!user || !passwordMatch) {
-      return next(new AppError(`Incorrect username or Password`, 400));
+    if (user) {
+      const passwordMatch = await argon.verify(user.password, password);
+      if (!passwordMatch) {
+        return next(new AppError(`Incorrect username or Password`, 400));
+      }
+    } else {
+      return next(new AppError(`Input valid credentials`, 400));
     }
 
     const accessToken = JWT.sign(user, process.env.JWT_SECRET!, {
