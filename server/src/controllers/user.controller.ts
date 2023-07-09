@@ -75,4 +75,44 @@ const fetchSingleUser = catchAsync(
   },
 );
 
-export default { fetchUsers, fetchSingleUser };
+// TODO:
+/**
+ *  1. Restrict Access to Editing certain fields from the db [username, email]
+ *  2. Convert update endpoint to form Data
+ *  3. Add Role based Authentication
+ *  */
+
+const updateUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    const payload = req.body;
+    const user = await User.findByIdAndUpdate(id, { ...payload }); // TODO: how can we control the values that go into the DB for updatng user record
+    if (!user) {
+      return next(new AppError('User not found', 404));
+    }
+    res.status(201).json({
+      status: 'success',
+      message: 'User updated successfully',
+    });
+  },
+);
+
+const deleteUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return next(new AppError('User not found', 404));
+    }
+    res.status(200).json({
+      status: 'success',
+      data: {
+        users: user,
+      },
+    });
+  },
+);
+
+export default { fetchUsers, fetchSingleUser, deleteUser, updateUser };
