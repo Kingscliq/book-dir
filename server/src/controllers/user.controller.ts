@@ -2,9 +2,8 @@ import { normalize } from './../utils/helpers';
 import { Request, Response, NextFunction } from 'express';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/appError';
-import { IUser } from '../interfaces/user.interface';
+
 import User from '../models/user.model';
-import * as argon from 'argon2';
 
 // Signup User
 const fetchUsers = catchAsync(
@@ -17,8 +16,7 @@ const fetchUsers = catchAsync(
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    // const books = await Book.find(queryObj);
-    let users = User.find(JSON.parse(queryStr));
+    let users = User.find(JSON.parse(queryStr), '-password');
 
     // SORTING
     if (req.query.sort) {
@@ -48,18 +46,13 @@ const fetchUsers = catchAsync(
     }
 
     // executing the query
-    const allUsers = await users;
-    const usersResponse = allUsers.map((user) => {
-      const { password, ...rest } = user;
-      return rest;
-    });
+    const response = await users;
 
     res.status(200).json({
       status: 'success',
-      result: allUsers.length,
-
+      result: response?.length,
       data: {
-        users: usersResponse,
+        users: response,
       },
     });
   },
@@ -67,7 +60,6 @@ const fetchUsers = catchAsync(
 const fetchSingleUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const users = await User.find();
-    console.log(users);
   },
 );
 
