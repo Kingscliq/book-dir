@@ -72,4 +72,4 @@ const login = catchAsync(
   },
 );
 
-export default { signup };
+export default { signup, login };
