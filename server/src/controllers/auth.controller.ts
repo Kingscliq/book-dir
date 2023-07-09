@@ -63,7 +63,7 @@ const login = catchAsync(
     });
 
     const { username, firstName, email, lastName } = user;
-    res.status(200).json({
+    return res.status(200).json({
       status: 'OK',
       data: {
         user: { username, firstName, lastName, email, accessToken },

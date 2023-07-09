@@ -8,6 +8,7 @@ import glogalErrorHandler from './controllers/error.controller';
 import bookRouter from './routes/book.route';
 import reviewRouter from './routes/review.route';
 import userRouter from './routes/user.route';
+import authRouter from './routes/auth.route';
 
 const app = express();
 
@@ -22,8 +23,7 @@ app.use(express.static(`${__dirname}/public`)); //for serving static files
 app.use('/api/v1/books', bookRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/signup', userRouter);
-app.use('/api/v1/login', userRouter);
+app.use('/api/v1/auth', authRouter);
 
 // Handling undefined routes
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
