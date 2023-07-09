@@ -15,8 +15,8 @@ const isAuthorised = (req: Request, res: Response, next: NextFunction) => {
     if (err) {
       console.log(`JWT: ${err.message}`);
       return res
-        .status(401)
-        .json({ status: false, error: 'UnAuthorized!, Token is not valid' });
+        .status(403)
+        .json({ status: false, error: 'Forbidden!, Token is not valid' });
     }
 
     (req as any).user = decoded;
