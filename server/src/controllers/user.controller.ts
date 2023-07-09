@@ -57,9 +57,19 @@ const fetchUsers = catchAsync(
     });
   },
 );
+
 const fetchSingleUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const users = await User.find();
+    const { id } = req.params;
+
+    const user = await User.findById(id, '-password');
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        users: user,
+      },
+    });
   },
 );
 

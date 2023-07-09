@@ -2,7 +2,6 @@ import { Response, Request, NextFunction } from 'express';
 import * as JWT from 'jsonwebtoken';
 
 const isAuthorised = (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.headers);
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
@@ -18,7 +17,6 @@ const isAuthorised = (req: Request, res: Response, next: NextFunction) => {
         .status(403)
         .json({ status: false, error: 'Forbidden!, Token is not valid' });
     }
-
     (req as any).user = decoded;
     next();
   });
