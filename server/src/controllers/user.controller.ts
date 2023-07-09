@@ -63,7 +63,9 @@ const fetchSingleUser = catchAsync(
     const { id } = req.params;
 
     const user = await User.findById(id, '-password');
-
+    if (!user) {
+      return next(new AppError('User not found', 404));
+    }
     res.status(200).json({
       status: 'success',
       data: {
