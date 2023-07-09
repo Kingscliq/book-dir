@@ -63,9 +63,11 @@ const fetchSingleUser = catchAsync(
     const { id } = req.params;
 
     const user = await User.findById(id, '-password');
+
     if (!user) {
       return next(new AppError('User not found', 404));
     }
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -108,9 +110,7 @@ const deleteUser = catchAsync(
     }
     res.status(200).json({
       status: 'success',
-      data: {
-        users: user,
-      },
+      message: 'User deleted successfully',
     });
   },
 );
