@@ -22,6 +22,8 @@ app.use(express.static(`${__dirname}/public`)); //for serving static files
 app.use('/api/v1/books', bookRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/signup', userRouter);
+app.use('/api/v1/login', userRouter);
 
 // Handling undefined routes
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

@@ -5,13 +5,14 @@ import AppError from '../utils/appError';
 import { IUser } from '../interfaces/user.interface';
 import User from '../models/user.model';
 import * as argon from 'argon2';
+import * as JWT from 'jsonwebtoken';
 
 // Signup User
 const signup = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const password = await argon.hash(req.body.password);
     let email = normalize(req.body.email);
-    
+
     const exists = await User.findOne({ email });
 
     if (exists?.email) {
@@ -42,6 +43,32 @@ const signup = catchAsync(
         },
       });
     }
+  },
+);
+
+const login = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { username: name, password } = req.body;
+
+    const user = await User.findOne({ username: name });
+
+    const passwordMatch = await argon.verify(user?.password!, password);
+
+    if (!user || !passwordMatch) {
+      return next(new AppError(`Incorrect username or Password`, 400));
+    }
+
+    const accessToken = JWT.sign(user, process.env.JWT_SECRET!, {
+      expiresIn: '24h',
+    });
+
+    const { username, firstName, email, lastName } = user;
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        user: { username, firstName, lastName, email, accessToken },
+      },
+    });
   },
 );
 
