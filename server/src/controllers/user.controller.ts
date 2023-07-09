@@ -14,8 +14,12 @@ const signup = catchAsync(
     let email = normalize(req.body.email);
     const exists = await User.findOne({ email });
 
-    if (exists) {
+    if (exists?.email) {
       return next(new AppError(`User ${email} already exists`, 400));
+    } else if (exists?.username) {
+      return next(
+        new AppError(`User ${req.body.username} already exists`, 400),
+      );
     }
 
     const user: Partial<IUser> = {
@@ -26,13 +30,15 @@ const signup = catchAsync(
 
     const created = await User.create(user);
 
+    const { username, firstName, lastName, email: userEmail } = created;
+
     if (!created) {
       return next(new AppError(`Error creating user! Please try again`, 400));
     } else {
       res.status(201).json({
         status: 'success',
         data: {
-          book: created,
+          user: { username, firstName, lastName, userEmail },
         },
       });
     }
