@@ -48,19 +48,24 @@ const signup = catchAsync(
 
 const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
+
     const { username: name, password } = req.body;
 
     const user = await User.findOne({ username: name });
+
     if (user) {
       const passwordMatch = await argon.verify(user.password, password);
+
       if (!passwordMatch) {
+        console.log(passwordMatch);
         return next(new AppError(`Incorrect username or Password`, 400));
       }
     } else {
       return next(new AppError(`Input valid credentials`, 400));
     }
 
-    const accessToken = JWT.sign(user, process.env.JWT_SECRET!, {
+    const accessToken = JWT.sign({ ...user }, process.env.JWT_SECRET!, {
       expiresIn: '24h',
     });
 
