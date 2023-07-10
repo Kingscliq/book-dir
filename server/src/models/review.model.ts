@@ -13,16 +13,16 @@ const reviewSchema = new mongoose.Schema<IReview>(
       },
   
       //   parent referencing
-      // book: {
-      //   // type: mongoose.Schema.ObjectId,
-      //   // ref: "Book",
-      //   required: [true, "Review must belong to a book."],
-      // },
-      // user: {
-      //   // type: mongoose.Schema.ObjectId,
-      //   // ref: "User",
-      //   required: [true, "Review must belong to a user."],
-      // },
+      book: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Book",
+        required: [true, "Review must belong to a book."],
+      },
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "Review must belong to a user."],
+      },
     },
     { timestamps: true },
     

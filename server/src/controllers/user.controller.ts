@@ -63,7 +63,7 @@ const fetchSingleUser = catchAsync(
     const { id } = req.params;
 
     const user = await User.findById(id, '-password');
-
+  
     if (!user) {
       return next(new AppError('User not found', 404));
     }
@@ -87,7 +87,7 @@ const fetchSingleUser = catchAsync(
 const updateUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-
+// TODO:user should not use this route for updating username, password and email
     const payload = req.body;
     const user = await User.findByIdAndUpdate(id, { ...payload }); // TODO: how can we control the values that go into the DB for updatng user record
     if (!user) {
@@ -103,7 +103,13 @@ const updateUser = catchAsync(
 const deleteUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+// TODO: 
 
+/**
+ * 1. We need not to delete a user bu change the active key to false
+ * 2. Implement a function to exclude inactive users when fetching all users
+ * 3. Add active to true by default on the user model
+ */
     const user = await User.findByIdAndDelete(id);
     if (!user) {
       return next(new AppError('User not found', 404));
