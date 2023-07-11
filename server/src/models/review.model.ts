@@ -28,5 +28,7 @@ const reviewSchema = new mongoose.Schema<IReview>(
     
   );
 
+// creating indexes so that a USER can only write one review on a book
+reviewSchema.index({ book: 1, user: 1 }, { unique: true });
   const Review = mongoose.model('Review', reviewSchema);
 export default Review;
