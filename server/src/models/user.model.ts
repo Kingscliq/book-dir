@@ -16,6 +16,13 @@ const userSchema = new mongoose.Schema<IUser>(
       lowercase: true,
       trim: true,
     },
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
+    favouriteBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book" }],
+
   },
   { timestamps: true },
 );
