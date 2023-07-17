@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { IUser } from '../interfaces/user.interface';
 
+// TODO:
 const userSchema = new mongoose.Schema<IUser>(
   {
     firstName: { type: String },
@@ -15,6 +16,13 @@ const userSchema = new mongoose.Schema<IUser>(
       lowercase: true,
       trim: true,
     },
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
+    favouriteBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book" }],
+
   },
   { timestamps: true },
 );

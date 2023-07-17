@@ -5,6 +5,21 @@ import AppError from '../utils/appError';
 
 import User from '../models/user.model';
 
+// functions that will filter out fields tha we dont want to update
+const filterObj = (obj:string, ...allowedFields:string[]) => {
+  const newObj:any = {};
+  Object.keys(obj).forEach((el:any) => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
+// const filterObj = (obj:string, ...allowedFields:string[]) => {
+//   Object.keys(obj).filter((el) =>{
+//     return el === allowedFields
+//   })
+// }
+  
+
 // Signup User
 const fetchUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -63,7 +78,7 @@ const fetchSingleUser = catchAsync(
     const { id } = req.params;
 
     const user = await User.findById(id, '-password');
-
+  
     if (!user) {
       return next(new AppError('User not found', 404));
     }
@@ -87,7 +102,7 @@ const fetchSingleUser = catchAsync(
 const updateUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-
+// TODO:user should not use this route for updating username, password and email
     const payload = req.body;
     const user = await User.findByIdAndUpdate(id, { ...payload }); // TODO: how can we control the values that go into the DB for updatng user record
     if (!user) {
@@ -99,11 +114,46 @@ const updateUser = catchAsync(
     });
   },
 );
+// const updateMe = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
+//   // console.log(req.file);
+//   // console.log(req.body);
+//   // 1) create error if user tries post password data
+//   if (req.body.password) {
+//     return next(
+//       new AppError(
+//         "this route is not for password update please use  updateMyPassword route",
+//         400
+//       )
+//     );
+//   }
+
+  // 2)filtering out the unwanted field names that are  allowed to be updated by calling the filterObj function and storing it in filteredBody
+//   const filteredBody = filterObj(req.body, "username", "email");
+//   // 3)update the user document
+//       const { id } = req.user.id ;
+
+//   const updatedUser = await User.findByIdAndUpdate(id, filteredBody, {
+//     new: true,
+//     runValidators: true,
+//   });
+//   res.status(200).json({
+//     status: "success",
+//     data: {
+//       user: updatedUser,
+//     },
+//   });
+// });
 
 const deleteUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+// TODO: 
 
+/**
+ * 1. We need not to delete a user bu change the active key to false
+ * 2. Implement a function to exclude inactive users when fetching all users
+ * 3. Add active to true by default on the user model
+ */
     const user = await User.findByIdAndDelete(id);
     if (!user) {
       return next(new AppError('User not found', 404));

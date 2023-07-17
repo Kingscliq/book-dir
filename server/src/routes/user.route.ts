@@ -1,14 +1,14 @@
 import express from 'express';
 import userController from '../controllers/user.controller';
-import isAuthorised from '../middlewares/auth.middleware';
+import Protected from '../middlewares/auth.middleware';
 
 const router = express.Router();
 
-router.route('/').get(isAuthorised, userController.fetchUsers);
+router.route('/').get(Protected, userController.fetchUsers);
 router
   .route('/:id')
-  .get(isAuthorised, userController.fetchSingleUser)
-  .patch(isAuthorised, userController.updateUser)
-  .delete(isAuthorised, userController.deleteUser);
+  .get(Protected, userController.fetchSingleUser)
+  .patch(Protected, userController.updateUser)
+  .delete(Protected, userController.deleteUser);
 
 export default router;

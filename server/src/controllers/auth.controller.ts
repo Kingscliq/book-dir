@@ -7,12 +7,13 @@ import User from '../models/user.model';
 import * as argon from 'argon2';
 import * as JWT from 'jsonwebtoken';
 
+// TODO:work on user custom responses
 // Signup User
 const signup = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const password = await argon.hash(req.body.password);
     let email = normalize(req.body.email);
-
+ 
     const exists = await User.findOne({ email });
 
     if (exists?.email) {
@@ -24,8 +25,8 @@ const signup = catchAsync(
     }
 
     const user: Partial<IUser> = {
-      email: email,
-      password: password,
+      email,
+      password,
       username: req.body.username,
     };
 
@@ -49,6 +50,10 @@ const signup = catchAsync(
 const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { username: name, password } = req.body;
+
+    if(!name || !password){
+      return next(new AppError("Email or password does not exist",400))
+    }
 
     const user = await User.findOne({ username: name });
 
