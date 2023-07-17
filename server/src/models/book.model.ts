@@ -61,6 +61,11 @@ const bookSchema = new mongoose.Schema<IBook>(
     },
   },
   { timestamps: true },
+  // TODO:resolve the code below
+  // {
+  //   toJSON: { virtuals: true },
+  //   toObject: { virtuals: true }
+  // }
 );
 
 
