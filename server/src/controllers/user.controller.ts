@@ -153,12 +153,12 @@ const deleteUser = catchAsync(
 );
 
 // deleteing currently loggedin a user
-// exports.deleteMe = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
-//   await User.findByIdAndUpdate(req.user.id, { active: false });
-//   res.status(204).json({
-//     status: "success",
-//     data: null,
-//   });
-// })
+const deleteMe = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
+  await User.findByIdAndUpdate((req as any).user._id, { active: false });
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+})
 
-export default { fetchUsers, fetchSingleUser, deleteUser, updateMe };
+export default { fetchUsers, fetchSingleUser, deleteUser, updateMe,deleteMe };
