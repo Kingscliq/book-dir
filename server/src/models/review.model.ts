@@ -65,12 +65,12 @@ reviewSchema.statics.calcAverageRatings = async function (bookId) {
   }
 };
 
-// calling the calcAverageRatins static function
-// we want this function to be called whenever a document is saved therefore we will use a middleware
-reviewSchema.post("save", function () {
-  // this points to the current review
-  this.constructor.calcAverageRatings(this.book); // remeber that product stores the  id of the current tour we are writing review for (the id comes from the URL)
-});
+// // calling the calcAverageRatins static function
+// the calAverageRating function will be called after a new document created is being saved to the database
+// reviewSchema.post("save", function () {
+//   // this points to the current review
+//   this.constructor.calcAverageRatings(this.book); // remeber that book stores the  id of the current book we are writing review for 
+// });
 
 // // for deleting and updating review
 // reviewSchema.pre(/^findOneAnd/, async function (next) {
@@ -79,11 +79,11 @@ reviewSchema.post("save", function () {
 //   next();
 // });
 
-// // at this point we have gotten the document(tour) we want
+// // at this point we have gotten the document(book) we want
 // // we can now pass to "post" because we want the code below to happen run when we save document in the database
-// // we use this.r becasue it is the variable holding the current document(tour) and the document(tour) contains the id of the current tour we want update od delete its review
+// // we use this.r becasue it is the variable holding the current document(book) and the document(book) contains the id of the current book we want update or delete its review
 
 // reviewSchema.post(/^findOneAnd/, async function () {
-//   await this.r.constructor.calcAverageRatings(this.r.book); //this is an async function because this.r above is an asyunc function
+//   await this.r.constructor.calcAverageRatings(this.r.book); //this is an async function because this.r above is an async function
 // });
 export default Review;

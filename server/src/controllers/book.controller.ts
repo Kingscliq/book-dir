@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Book from './../models/book.model';
+import User from './../models/user.model'
 import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/appError';
 
@@ -104,7 +105,7 @@ const createBook = catchAsync(
 // get one book
 const getBook = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const book = await Book.findById(req.params.id);
+    const book = await Book.findById(req.params.id).populate("reviews");;
     if (!book) {
       return next(
         new AppError(
@@ -164,5 +165,35 @@ const deleteBook = catchAsync(
     });
   },
 );
+
+// const addToFavouriteBooks = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
+//   const { _id } = req.user;
+//   const { prodId } = req.body;
+//   // // finding the currently loggedin user
+//   const user = await User.findById(_id);
+
+//   // checking if the id of the book we want to add is already in the favouriteBooks
+//   const alreadyAdded = user?.favouriteBooks.find((id) => id === prodId);
+//   console.log(alreadyAdded);
+
+//   // // removing the book id from the favouriteBooks if it is already there
+//   if (!alreadyAdded) {
+//     let user = await User.findByIdAndUpdate(
+//       _id,
+//       { $push: { favouriteBooks: prodId } },
+//       { new: true }
+//     );
+//     res.status(200).json({
+//       status: "success",
+//       data: {
+//         user,
+//       },
+//     });
+    
+//   } else {
+//     return next(new AppError("Book already in favouriteBooks", 401));
+//   }
+// });
+
 
 export default { createBook, getBook, updateBook, deleteBook, getAllBook };

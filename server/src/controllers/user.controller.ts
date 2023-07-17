@@ -99,50 +99,37 @@ const fetchSingleUser = catchAsync(
  *  3. Add Role based Authentication
  *  */
 
-const updateUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
-// TODO:user should not use this route for updating username, password and email
-    const payload = req.body;
-    const user = await User.findByIdAndUpdate(id, { ...payload }); // TODO: how can we control the values that go into the DB for updatng user record
-    if (!user) {
-      return next(new AppError('User not found', 404));
-    }
-    res.status(201).json({
-      status: 'success',
-      message: 'User updated successfully',
-    });
-  },
-);
-// const updateMe = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
-//   // console.log(req.file);
-//   // console.log(req.body);
-//   // 1) create error if user tries post password data
-//   if (req.body.password) {
-//     return next(
-//       new AppError(
-//         "this route is not for password update please use  updateMyPassword route",
-//         400
-//       )
-//     );
-//   }
 
-  // 2)filtering out the unwanted field names that are  allowed to be updated by calling the filterObj function and storing it in filteredBody
-//   const filteredBody = filterObj(req.body, "username", "email");
-//   // 3)update the user document
-//       const { id } = req.user.id ;
+// const getMe = (req:Request, res:Response, next:NextFunction) => {
+//   req.params.id = req.user._id;
+//   next();
+// };
+const updateMe = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
+  // 1) create error if user tries post password data
+  if (req.body.password) {
+    return next(
+      new AppError(
+        "this route is not for password update please use  updateMyPassword route",
+        400
+      )
+    );
+  }
 
-//   const updatedUser = await User.findByIdAndUpdate(id, filteredBody, {
-//     new: true,
-//     runValidators: true,
-//   });
-//   res.status(200).json({
-//     status: "success",
-//     data: {
-//       user: updatedUser,
-//     },
-//   });
-// });
+  // filtering out the unwanted field names that are  allowed to be updated by calling the filterObj function and storing it in filteredBody
+  const filteredBody = filterObj(req.body, "firstName", "lastName","avater");
+      const { id } = (req as any).user._id ;
+
+  const updatedUser = await User.findByIdAndUpdate(id, filteredBody, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({
+    status: "success",
+    data: {
+      user: updatedUser,
+    },
+  });
+});
 
 const deleteUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -165,4 +152,13 @@ const deleteUser = catchAsync(
   },
 );
 
-export default { fetchUsers, fetchSingleUser, deleteUser, updateUser };
+// deleteing currently loggedin a user
+// exports.deleteMe = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
+//   await User.findByIdAndUpdate(req.user.id, { active: false });
+//   res.status(204).json({
+//     status: "success",
+//     data: null,
+//   });
+// })
+
+export default { fetchUsers, fetchSingleUser, deleteUser, updateMe };

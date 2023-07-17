@@ -27,6 +27,12 @@ const userSchema = new mongoose.Schema<IUser>(
   { timestamps: true },
 );
 
+// this query will help us to get only active users
+// userSchema.pre(/^find/, function (next) {
+//   this.find({ active: { $ne: false } });
+//   next();
+// });
+
 const User = mongoose.model('User', userSchema);
 
 export default User;

@@ -63,5 +63,14 @@ const bookSchema = new mongoose.Schema<IBook>(
   { timestamps: true },
 );
 
+
+// Virtual populate
+bookSchema.virtual("reviews", {
+  ref: "Review", //the model we want to reference to
+  foreignField: "book", //the field in the Review model where the Id of the book that was reviewed is stored
+  localField: "_id", //the field in the book model where the id of the book that was review is stored
+});
+
+
 const Book = mongoose.model('Book', bookSchema);
 export default Book;

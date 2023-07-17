@@ -3,6 +3,11 @@ import bookController from '../controllers/book.controller';
 
 const router = express.Router();
 
+// router
+//   .route("/add-to-favouriteBook")
+//   .patch( bookController.addToFavouriteBooks);
+
+
 router
   .route('/')
   .get(bookController.getAllBook)
